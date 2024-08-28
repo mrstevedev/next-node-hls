@@ -10,12 +10,8 @@ export default function Controls({
   handleMuteVolume,
   toggleVolume,
   current,
-  tracks,
+  paused,
 }: any) {
-  const isMatch = tracks
-    .map((data: { Key: string }) => data.Key)[0]
-    .split(".m3u8")[0];
-
   return (
     <Fragment>
       <p style={{ fontWeight: 200, textTransform: "uppercase", fontSize: 11 }}>
@@ -49,7 +45,7 @@ export default function Controls({
           >
             Pause
           </Button>
-          {current !== isMatch || onPause ? (
+          {!current || paused ? (
             <Button
               className={`${styles.BBP_AudioPlayer__Control} track-button`}
               onClick={onStartButton}

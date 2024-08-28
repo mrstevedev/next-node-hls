@@ -18,6 +18,7 @@ export default function ReactAudioPlayer({ data }: any) {
   const [elapsed, setElapsed] = useState<string | null>("0:00");
   const [duration, setDuration] = useState<string | null | undefined>("0:00");
   const [displayWave, setDisplayWave] = useState(false);
+  const [paused, setPaused] = useState(false);
   const [currentPlayingTracklist] = useState(
     data.map((data: { Url: string }) => data.Url)
   );
@@ -33,6 +34,7 @@ export default function ReactAudioPlayer({ data }: any) {
     process.env.NEXT_PUBLIC_AWS_S3_BUCKET_URL + `/${current}.m3u8`;
 
   const onPause = () => {
+    setPaused(true);
     setPlaying(false);
     setDisplayWave(false);
     clearInterval(timeInterval);
@@ -161,6 +163,7 @@ export default function ReactAudioPlayer({ data }: any) {
   };
 
   const onStartButton = (event: MouseEvent) => {
+    setPaused(false);
     startTimer();
     const track = document.querySelector(".list-group li");
     const trackLi = document.querySelector(`[data-name="${current}"]`);
@@ -264,7 +267,7 @@ export default function ReactAudioPlayer({ data }: any) {
         onPause={onPause}
         onStop={onStop}
         current={current}
-        tracks={data}
+        paused={paused}
         handleRaiseVolume={handleRaiseVolume}
         handleMuteVolume={handleMuteVolume}
         toggleVolume={toggleVolume}
