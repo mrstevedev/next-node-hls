@@ -10,7 +10,7 @@ import {
 } from "@/util/index";
 import ReactPlayer from "react-player";
 
-export default function ReactAudioPlayer({ data }) {
+export default function ReactAudioPlayer({ data }: any) {
   const playerRef = useRef<ReactPlayer>(null);
   const progressRef = useRef(null);
   const [playing, setPlaying] = useState(false);
@@ -18,7 +18,9 @@ export default function ReactAudioPlayer({ data }) {
   const [elapsed, setElapsed] = useState<string | null>("0:00");
   const [duration, setDuration] = useState<string | null | undefined>("0:00");
   const [displayWave, setDisplayWave] = useState(false);
-  const [currentPlayingTracklist] = useState(data.map((data) => data.Url));
+  const [currentPlayingTracklist] = useState(
+    data.map((data: { Url: string }) => data.Url)
+  );
   const [counter, setCounter] = useState<number>(0);
   const [timeInterval, setTimeInterval] = useState<
     undefined | ReturnType<typeof setTimeout>
@@ -38,7 +40,7 @@ export default function ReactAudioPlayer({ data }) {
     trackBtn?.classList.remove("track-active");
   };
 
-  const onSeek = (event) => {
+  const onSeek = (event: { clientX: number }) => {
     const slider = document.querySelector(".progress");
     const progress = document.querySelector(".progress-bar");
 
@@ -138,7 +140,7 @@ export default function ReactAudioPlayer({ data }) {
     const active = document.querySelector(".active");
     const trackName = event?.currentTarget.getAttribute("data-name") as string;
     const itemIndex = currentPlayingTracklist.findIndex(
-      (name) => name.split("/")[3].split(".m3u8")[0] === trackName
+      (name: string) => name.split("/")[3].split(".m3u8")[0] === trackName
     );
     setAudioIndex(itemIndex);
     const trackDuration = event?.currentTarget.getAttribute(
