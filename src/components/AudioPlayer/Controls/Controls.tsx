@@ -11,8 +11,10 @@ export default function Controls({
   toggleVolume,
   current,
   tracks,
-}) {
-  const isMatch = tracks.map((data) => data.Key)[0].split(".m3u8")[0];
+}: any) {
+  const isMatch = tracks
+    .map((data: { Key: string }) => data.Key)[0]
+    .split(".m3u8")[0];
 
   return (
     <Fragment>
