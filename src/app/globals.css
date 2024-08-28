@@ -2,32 +2,238 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+body,
+html {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: Helvetica Neue, sans-serif !important;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+a {
+  color: "inherit";
+  text-decoration: none !important;
+}
+
+img {
+  height: 70px;
+}
+
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("../../public/fonts/HelveticaNeueBold.woff2") format("woff2"),
+    url("../../public/fonts/HelveticaNeueBold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("../../public/fonts/HelveticaNeueMedium.woff2") format("woff2"),
+    url("../../public/fonts/HelveticaNeueMedium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("../../public/fonts/HelveticaNeueLight.woff2") format("woff2"),
+    url("../../public/fonts/HelveticaNeueLight.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+.btn-primary:not(.card-button, .track-button) {
+  color: #fff;
+  background-color: #000000;
+  border-color: #000000;
+  box-shadow: none !important;
+  font-weight: bold !important;
+  text-transform: capitalize;
+}
+
+.btn-secondary {
+  font-size: 0.9rem !important;
+  border-radius: 3px !important;
+  color: #ce494d !important;
+  background-color: #fedadb !important;
+  border: none !important;
+  font-weight: bold !important;
+  padding: 0.3rem 1rem !important;
+}
+
+.btn-secondary:hover {
+  background-color: greenred !important;
+}
+.btn-secondary:active {
+  color: #ce494d !important;
+  background-color: #ffdede !important;
+}
+
+.btn:hover:not(.btn-secondary, .track-button) {
+  color: #ffffff !important;
+  border-color: #1a1a1a !important;
+  background-color: #262626 !important;
+}
+
+.btn:active:not(.btn__prev, .btn__next, .btn-secondary, .card-button) {
+  color: #fff !important;
+  background-color: #000 !important;
+}
+
+.subscribe {
+  width: 100%;
+}
+
+.progress-container {
+  width: 100%;
+}
+
+@media (max-width: 575px) {
+  .progress {
+    width: 100% !important;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@media (min-width: 575px) {
+  .subscribe-form {
+    margin: 10rem 0px 0rem 0;
+  }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+.progress {
+  background-color: #1f1f1f !important;
+}
+
+#progress-bar .bg-info {
+  background-color: #9cd1ee !important;
+  transition: linear 1s;
+}
+
+.tracklist-item {
+  padding: 0.1rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 11px;
+  text-transform: capitalize;
+  transition: 0.12s ease-in-out;
+  margin: 0.1rem 0;
+}
+
+.tracklist-item-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tracklist-item:hover {
+  background: #212121;
+}
+
+.tracklist-item.active {
+  background: #212121;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #2b2b2b;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 8px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.track-active {
+  background: rgb(156, 209, 238) !important;
+}
+
+/* SoundWave */
+.sound-wave-desktop {
+  height: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.5;
+  position: absolute;
+  top: 26.5rem;
+}
+
+.sound-wave-mobile {
+  height: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.5;
+  position: absolute;
+  top: 26.5rem;
+  width: 100%;
+}
+
+.bar {
+  animation-name: wave-lg;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-direction: alternate;
+  background: #9cd1ee;
+  margin: 0 1.5px;
+  height: 10px;
+  width: 1px;
+
+  &:nth-child(-n + 7),
+  &:nth-last-child(-n + 7) {
+    animation-name: wave-md;
+  }
+
+  &:nth-child(-n + 3),
+  &:nth-last-child(-n + 3) {
+    animation-name: wave-sm;
+  }
+}
+
+@keyframes wave-sm {
+  0% {
+    opacity: 0.35;
+    height: 10px;
+  }
+  100% {
+    opacity: 1;
+    height: 25px;
+  }
+}
+
+@keyframes wave-md {
+  0% {
+    opacity: 0.35;
+    height: 15px;
+  }
+  100% {
+    opacity: 1;
+    height: 50px;
+  }
+}
+
+@keyframes wave-lg {
+  0% {
+    opacity: 0.35;
+    height: 15px;
+  }
+  100% {
+    opacity: 1;
+    height: 70px;
   }
 }
