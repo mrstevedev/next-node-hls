@@ -39,13 +39,13 @@ if (!fs.existsSync(downloadsDir)) {
   fs.mkdirSync(downloadsDir, { recursive: true });
 }
 
-fs.readdir(downloadsDir, (err, files) => {
+fs.readdir(downloadsDir, (err: { message: string }, files: any[]) => {
   if (err) {
     console.error(err.message);
 
     return;
   }
-  files.map(async (file) => {
+  files.map(async (file: string) => {
     const fileName = path.join(downloadsDir, file);
 
     const chapterId = file.split(/.mp3|.wav/)[0];
@@ -60,12 +60,12 @@ fs.readdir(downloadsDir, (err, files) => {
     }
 
     const command = `ffmpeg -i ${fileName} -profile:v baseline -level 3.0 -s 640x360 -start_number 0 -hls_time 10 -hls_list_size 0 -f hls ${outputPath}`;
-    exec(command, (error) => {
+    exec(command, (error: unknown) => {
       if (error) {
         console.error(`ffmpeg exec error: ${error}`);
       }
 
-      fs.readdir(dest, async (err, files) => {
+      fs.readdir(dest, async (err: { message: string }, files: any[]) => {
         const params = {
           Region: process.env.AWS_REGION,
           Bucket: process.env.AWS_S3_BUCKET,
