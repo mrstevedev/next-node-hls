@@ -10,7 +10,7 @@ export default function SubscribeForm() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
-  const handleSignUp = async (event) => {
+  const handleSignUp = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     try {
       setLoading(true);
