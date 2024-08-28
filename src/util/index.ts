@@ -1,6 +1,8 @@
-export const convertDurationToSeconds = (duration) => {
+export const convertDurationToSeconds = (
+  duration: string | null | undefined
+) => {
   const split = duration?.split(":");
-  const result = Number(split[0]) * 60 + Number(split[1]);
+  const result = Number(split?.[0]) * 60 + Number(split?.[1]);
   return result;
 };
 export const convertSecondsToMinutes = (counter: number) => {
@@ -10,7 +12,7 @@ export const convertSecondsToMinutes = (counter: number) => {
   return result;
 };
 
-export const onProgress = (counter, duration) => {
+export const onProgress = (counter: number, duration: any) => {
   let width = 0;
 
   const dur = convertDurationToSeconds(duration);
@@ -22,6 +24,6 @@ export const onProgress = (counter, duration) => {
   }
 };
 
-export const padTo2Digits = (seconds) => {
+export const padTo2Digits = (seconds: number) => {
   return seconds.toString().padStart(2, "0");
 };
