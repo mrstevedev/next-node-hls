@@ -25,7 +25,7 @@ export default function SubscribeForm() {
     }
   };
   return (
-    <div className="subscribe">
+    <div className="subscribe mb-6">
       <h2 style={{ fontSize: "0.8rem", textTransform: "uppercase" }}>
         Subscribe to our newsletter
       </h2>

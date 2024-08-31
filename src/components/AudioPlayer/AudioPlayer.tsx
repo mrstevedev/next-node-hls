@@ -4,16 +4,17 @@ import BBPMusicLogo from "@/components/AudioPlayer/BBPMusicLogo/Logo";
 import ComingSoonText from "@/components/AudioPlayer/ComingSoon/ComingSoon";
 import SubscribeForm from "@/components/AudioPlayer/Subscribe/SubscribeForm";
 
-import { S3, params } from "@/client/client";
+import { s3, params } from "client/client";
 import { ListObjectsCommand } from "@aws-sdk/client-s3";
 import { tracks } from "@/components/AudioPlayer/trackinfo";
 import ReactAudioPlayer from "@/components/AudioPlayer/ReactAudioPlayer/ReactAudioPlayer";
+import Socials from "./Socials/Socials";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default async function AudioPlayer() {
   const command = new ListObjectsCommand(params);
-  const list = await S3.send(command);
+  const list = await s3.send(command);
   const filtered = list.Contents?.filter((data) => data.Key?.match(/.m3u8/g));
   const data = filtered?.map((item) => ({
     ...item,
@@ -49,6 +50,7 @@ export default async function AudioPlayer() {
         <ComingSoonText />
         <ReactAudioPlayer data={data} />
         <SubscribeForm />
+        <Socials />
       </div>
     </div>
   );
