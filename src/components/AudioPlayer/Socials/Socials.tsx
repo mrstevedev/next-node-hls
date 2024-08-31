@@ -1,10 +1,11 @@
+import { SOCIAL } from "@/constants";
 import Link from "next/link";
 
 export default function Socials() {
   return (
     <div className="absolute bottom-9 flex items-center gap-2">
       Follow On{" "}
-      <Link href="https://www.instagram.com/bbpmusiclibrary/" target="_blank">
+      <Link href={SOCIAL.SOCIAL_IG} target="_blank">
         <svg
           width="18"
           height="18"

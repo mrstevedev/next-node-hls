@@ -6,6 +6,10 @@ export enum ROUTE {
   SUBSCRIBE = "/subscribe",
 }
 
+export enum SOCIAL {
+  SOCIAL_IG = "https://www.instagram.com/bbpmusiclibrary/",
+}
+
 /**
  * STATUS
  * Newsletter
