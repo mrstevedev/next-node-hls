@@ -15,10 +15,11 @@
  *
  */
 
-const path = require("path");
 const fs = require("fs");
+const path = require("path");
 const { exec } = require("child_process");
 const { s3 } = require("./client/client");
+const { Upload } = require("@aws-sdk/lib-storage");
 const { PutObjectCommand } = require("@aws-sdk/client-s3");
 
 /**
@@ -39,13 +40,16 @@ if (!fs.existsSync(downloadsDir)) {
   fs.mkdirSync(downloadsDir, { recursive: true });
 }
 
-fs.readdir(downloadsDir, (err: { message: string }, files: any[]) => {
-  if (err) {
-    console.error(err.message);
+fs.readdir(downloadsDir, (err, files) => {
+  if (err instanceof Error) {
+    if (err) {
+      console.error(err.message);
 
-    return;
+      return;
+    }
   }
-  files.map(async (file: string) => {
+
+  files.map(async (file) => {
     const fileName = path.join(downloadsDir, file);
 
     const chapterId = file.split(/.mp3|.wav/)[0];
@@ -60,23 +64,35 @@ fs.readdir(downloadsDir, (err: { message: string }, files: any[]) => {
     }
 
     const command = `ffmpeg -i ${fileName} -profile:v baseline -level 3.0 -s 640x360 -start_number 0 -hls_time 10 -hls_list_size 0 -f hls ${outputPath}`;
-    exec(command, (error: unknown) => {
+    exec(command, (error) => {
       if (error) {
         console.error(`ffmpeg exec error: ${error}`);
       }
-
-      fs.readdir(dest, async (err: { message: string }, files: any[]) => {
-        const params = {
-          Region: process.env.AWS_REGION,
-          Bucket: process.env.AWS_S3_BUCKET,
-          Body: files,
-        };
-
-        // Upload to s3
-        const command = new PutObjectCommand(params);
-        const data = await s3.send(command);
-        console.log(data);
-      });
     });
+
+    // fs.watch(dest, () => {
+    //   fs.readdir(dest, (err, files) => {
+    //     files.forEach(async (file) => {
+    //       const fpath = path.join(
+    //         `public/audio/streams/${
+    //           file.split(/.m3u8|[0-9][0-2]?.ts/)[0]
+    //         }/${file}`
+    //       );
+    //       const stream = fs.createReadStream(fpath);
+    //       const Key = stream.path.split("/")[4];
+    //       // console.log(Key);
+
+    //       const upload = new Upload({
+    //         client: s3,
+    //         params: {
+    //           Bucket: process.env.AWS_S3_BUCKET,
+    //           Key: Key,
+    //           Body: stream,
+    //         },
+    //       });
+    //       await upload.done();
+    //     });
+    //   });
+    // });
   });
 });
