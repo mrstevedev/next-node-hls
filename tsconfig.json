@@ -27,7 +27,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app.Js",
+    "app.ts",
     "client/client.js",
     "client/client.js"
   ],
