@@ -6,7 +6,7 @@
  * - Directions -
  * 1. Find an MP3 file you want to convert
  * 2. Place it in the downloads folder
- * 3. Run the command `node convertMp3Hls.ts`
+ * 3. Run the command `node app.ts`
  * 4. Observe the new folder in /public/audio/streams
  * 5. Observe the stream files uploaded to the S3 Bucket.
  *
