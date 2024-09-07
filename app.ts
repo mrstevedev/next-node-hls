@@ -40,7 +40,7 @@ if (!fs.existsSync(downloadsDir)) {
   fs.mkdirSync(downloadsDir, { recursive: true });
 }
 
-fs.readdir(downloadsDir, (err, files) => {
+fs.readdir(downloadsDir, (err: { message: any }, files: any[]) => {
   if (err instanceof Error) {
     if (err) {
       console.error(err.message);
@@ -49,7 +49,7 @@ fs.readdir(downloadsDir, (err, files) => {
     }
   }
 
-  files.map(async (file) => {
+  files.map((file: string) => {
     const fileName = path.join(downloadsDir, file);
 
     const chapterId = file.split(/.mp3|.wav/)[0];
@@ -64,35 +64,40 @@ fs.readdir(downloadsDir, (err, files) => {
     }
 
     const command = `ffmpeg -i ${fileName} -profile:v baseline -level 3.0 -s 640x360 -start_number 0 -hls_time 10 -hls_list_size 0 -f hls ${outputPath}`;
-    exec(command, (error) => {
+    exec(command, (error: any) => {
       if (error) {
         console.error(`ffmpeg exec error: ${error}`);
       }
     });
 
-    // fs.watch(dest, () => {
-    //   fs.readdir(dest, (err, files) => {
-    //     files.forEach(async (file) => {
-    //       const fpath = path.join(
-    //         `public/audio/streams/${
-    //           file.split(/.m3u8|[0-9][0-2]?.ts/)[0]
-    //         }/${file}`
-    //       );
-    //       const stream = fs.createReadStream(fpath);
-    //       const Key = stream.path.split("/")[4];
-    //       // console.log(Key);
+    fs.watch(dest, () => {
+      fs.readdir(dest, (err: any, files: any[]) => {
+        files.forEach(async (file: string) => {
+          const fpath = path.join(
+            `public/audio/streams/${
+              file.split(/.m3u8|[0-9][0-2]?.ts/)[0]
+            }/${file}`
+          );
+          const stream = fs.createReadStream(fpath);
+          const Key = stream.path.split("/")[4];
+          // console.log(Key);
 
-    //       const upload = new Upload({
-    //         client: s3,
-    //         params: {
-    //           Bucket: process.env.AWS_S3_BUCKET,
-    //           Key: Key,
-    //           Body: stream,
-    //         },
-    //       });
-    //       await upload.done();
-    //     });
-    //   });
-    // });
+          const upload = new Upload({
+            client: s3,
+            params: {
+              Bucket: process.env.AWS_S3_BUCKET,
+              Key: Key,
+              //!! ERROR: @smithy/node-http-handler:WARN - socket usage at capacity=50 and 118 additional requests are enqueued.
+              //!! SlowDown: Please reduce your request rate.
+              //!! WARN - socket usage at capacity=50 and 654 additional requests are enqueued.
+              //!! See https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/node-configuring-maxsockets.html
+              //!! or increase socketAcquisitionWarningTimeout=(millis) in the NodeHttpHandler config.
+              Body: stream,
+            },
+          });
+          await upload.done();
+        });
+      });
+    });
   });
 });
